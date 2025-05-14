@@ -1,5 +1,7 @@
 import streamlit as st
-from backend.services.message_service import get_messages_by_thread
+from backend.services.message_service import MessageService
+
+message_service = MessageService()
 
 def chat_history(thread_id: int, thread_title: str):
     st.markdown(f"### スレッド [{thread_id}] {thread_title} の会話履歴")
@@ -10,7 +12,7 @@ def chat_history(thread_id: int, thread_title: str):
     messages = st.session_state.get(cache_key)
     if messages is None:
         # DBから取得
-        messages = get_messages_by_thread(thread_id)
+        messages = message_service.get_messages_by_thread(thread_id)
         # キャッシュに保存
         st.session_state[cache_key] = messages
 

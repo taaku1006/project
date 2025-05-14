@@ -1,5 +1,7 @@
 import streamlit as st
-from backend.services.thread_service import create_thread
+from backend.services.thread_service import ThreadService
+
+thread_service = ThreadService()
 
 def new_thread_form():
     if st.button("新規スレッド作成"):
@@ -12,7 +14,7 @@ def new_thread_form():
 
         if st.button("作成する"):
             if title.strip():
-                create_thread(title)
+                thread_service.create_thread(title)
                 st.success(f"スレッド '{title}' を作成しました")
                 # 状態をリセット
                 st.session_state["create_thread"] = False

@@ -1,5 +1,7 @@
 import streamlit as st
-from backend.services.message_service import send_message
+from backend.services.message_service import MessageService
+
+message_service = MessageService()
 
 def chat_input(thread_id: int):
     with st.form(f"chat_form_{thread_id}"):  # スレッド単位でフォームも分離（安全）
@@ -11,8 +13,8 @@ def chat_input(thread_id: int):
             bot_response = st.session_state.llm_service.chat(user_input)
 
             # メッセージDB保存
-            send_message(thread_id, content=user_input, sender_type='user')
-            send_message(thread_id, content=bot_response, sender_type='ai')
+            message_service.send_message(thread_id, content=user_input, sender_type='user')
+            message_service.send_message(thread_id, content=bot_response, sender_type='ai')
 
             # UI用メッセージキャッシュキー（スレッド単位）
             cache_key = f"messages_{thread_id}"
