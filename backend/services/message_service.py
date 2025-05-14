@@ -28,8 +28,12 @@ def get_messages_by_thread(thread_id: int):
                 .all()
             )
             logger.info(f"会話履歴取得成功: thread_id={thread_id}, メッセージ数={len(messages)}")
-            return messages
+
+            # 辞書型に変換
+            return [{"sender_type": msg.sender_type, "content": msg.content} for msg in messages]
+
         except Exception as e:
             logger.error(f"会話履歴取得失敗: {e}")
             raise
+
 
