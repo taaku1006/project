@@ -10,7 +10,14 @@ def chat_input(thread_id: int):
             st.session_state.setdefault("messages", [])
             st.session_state["messages"].append({"sender": "user", "text": user_input})
             send_message(thread_id, content=user_input, sender_type='user')
-            st.success("メッセージ送信しました")
+
+            # LangChainサービスでLLM呼び出し
+            bot_response = st.session_state.llm_service.chat(user_input)
+
+            # LLMからの応答も履歴に追加＆DB保存
+            st.session_state["messages"].append({"sender": "ai", "text": bot_response})
+            send_message(thread_id, content=bot_response, sender_type='ai')
+
             # UIを反映
             st.rerun()
 
