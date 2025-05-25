@@ -1,0 +1,3 @@
+# モデルの設定ファイル
+FROM hf.co/elyza/Llama-3-ELYZA-JP-8B-GGUF:Q4_K_M
+SYSTEM "あなたは日本語で丁寧に答えるAIアシスタントです。"

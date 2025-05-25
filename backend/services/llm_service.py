@@ -4,7 +4,7 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 
 class LLMChatService:
-    def __init__(self, model_name="qwen:7b-chat"):
+    def __init__(self, model_name="elyza3"):
         # LLMの初期化
         self.llm = OllamaLLM(model=model_name, base_url="http://ollama:11434")
         self.memory = ConversationBufferMemory(memory_key="history",return_messages=True)
