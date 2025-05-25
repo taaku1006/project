@@ -13,6 +13,11 @@ services:
     depends_on:
       - db
       - ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
 
   db:
     image: postgres:15
@@ -39,6 +44,11 @@ services:
     restart: always
     volumes:
       - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
 
 volumes:
   ollama_data:

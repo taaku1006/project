@@ -4,15 +4,15 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 
 class LLMChatService:
-    def __init__(self, model_name="llama3"):
+    def __init__(self, model_name="qwen:7b-chat"):
         # LLMの初期化
         self.llm = OllamaLLM(model=model_name, base_url="http://ollama:11434")
         self.memory = ConversationBufferMemory(memory_key="history",return_messages=True)
-        template = """あなたは会話を日本語で回答します。
-以下はこれまでの会話です。
+        template = """あなたは親切で知識豊富なAIであり、日本語だけで回答します。
+絶対に中国語では答えないでください。以下は会話履歴です：
 {history}
 ユーザー: {input}
-AI（日本語で回答）:"""
+AI（日本語）:"""
 
         self.prompt = PromptTemplate(
             input_variables=["history", "input"],

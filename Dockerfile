@@ -1,25 +1,36 @@
-# ベースイメージ
-FROM python:3.11
+# CUDA対応ベースイメージ（GPU使用のため）
+FROM nvidia/cuda:12.6.0-base-ubuntu22.04
 
-# 作業ディレクトリを /app に設定
+# Python3.11と基本ツールをインストール
+RUN apt update && apt install -y \
+    python3.11 python3.11-venv python3.11-dev python3-pip \
+    curl git build-essential
+
+# python3 のデフォルトを 3.11 に設定
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
+
+# Poetryインストール
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Poetryのパスを有効に
+ENV PATH="/root/.local/bin:$PATH"
+
+# 作業ディレクトリ
 WORKDIR /app
 
-# Poetryのインストール
-RUN pip install --upgrade pip && \
-    pip install poetry
-
-# Poetryの仮想環境を無効化（グローバルに依存をインストール）
+# Poetryの仮想環境を無効化（グローバルにインストール）
 RUN poetry config virtualenvs.create false
 
-# Poetry依存ファイルを先にコピー（キャッシュ効率化）
+# 依存ファイルのみ先にコピー（キャッシュ効率化）
 COPY pyproject.toml poetry.lock* /app/
 
-# 依存関係のインストール
+# 依存ライブラリのインストール
 RUN poetry install --no-root
 
-# ルートディレクトリ全体をコピーする
+# アプリ全体をコピー
 COPY . /app
 
+# PYTHONPATHを設定
 ENV PYTHONPATH="${PYTHONPATH}:/app"
 
 # Streamlitアプリの起動
