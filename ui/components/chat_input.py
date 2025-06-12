@@ -24,7 +24,10 @@ def chat_input(thread_id: int):
                 st.session_state[cache_key].append({"sender_type": "user", "content": user_input})
                 st.session_state[cache_key].append({"sender_type": "ai", "content": bot_response})
             else:
-                pass
+                st.session_state[cache_key] = [
+                    {"sender_type": "user", "content": user_input},
+                    {"sender_type": "ai", "content": bot_response},
+                ]
 
             # UIリロード
             st.rerun()
